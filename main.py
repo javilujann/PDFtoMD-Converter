@@ -1,27 +1,46 @@
+#!/usr/bin/env python3
 from mcp.server.fastmcp import FastMCP
 import pdfplumber
-import markdownify
+from markdownify import markdownify as md_convert
+import os
 
-app = FastMCP("Pdf-To-Md-server", dependencies=["pdfplumber", "markdownify"])
+app = FastMCP("PDF-Md-Converter-server", dependencies=["pdfplumber", "markdownify"])
 
 @app.tool()
-def pdf_to_markdown(input_path: str) -> str:
+def pdf_to_markdown(input_path: str, output_path: str = None) -> str:
     """
     Convierte un PDF a texto Markdown.
 
     :param input_path: Ruta al archivo PDF.
+    :param output_path: Ruta opcional para guardar el archivo Markdown.
     :return: Cadena con contenido en Markdown.
     """
-    md_blocks = []
-    with pdfplumber.open(input_path) as pdf:
-        for page in pdf.pages:
-            text = page.extract_text()
-            if not text:
-                continue
-            md = markdownify.markdownify(text, heading_style="ATX")
-            md_blocks.append(md)
-    return "\n\n".join(md_blocks)
-
+    if not os.path.exists(input_path):
+        return f"Error: El archivo {input_path} no existe."
+    
+    try:
+        md_blocks = []
+        with pdfplumber.open(input_path) as pdf:
+            for page_num, page in enumerate(pdf.pages, 1):
+                text = page.extract_text()
+                if not text:
+                    continue
+                # Convertir el texto extraído a formato Markdown
+                converted_text = md_convert(text, heading_style="ATX")
+                md_blocks.append(f"## Página {page_num}\n\n{converted_text}")
+        
+        markdown_content = "\n\n".join(md_blocks)
+        
+        # Guardar el contenido en un archivo si se proporciona output_path
+        if output_path:
+            with open(output_path, 'w', encoding='utf-8') as file:
+                file.write(markdown_content)
+            return f"Archivo Markdown guardado en: {output_path}"
+        
+        return markdown_content
+    
+    except Exception as e:
+        return f"Error al procesar el PDF: {str(e)}"
 
 if __name__ == "__main__":
     app.run(transport="stdio")
