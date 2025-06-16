@@ -1,0 +1,10 @@
+{
+    "servers": {
+        "PDF-Md-Converter-server": {
+            "type": "stdio",
+            "command": "python",
+            "args": ["${workspaceFolder}/main.py"],
+            "env": {}
+        },
+    }
+}
