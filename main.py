@@ -9,14 +9,14 @@ app = FastMCP("PDF-Md-Converter-server", dependencies=["pdfplumber", "markdownif
 @app.tool()
 def pdf_to_markdown(input_path: str, output_path: str = None) -> str:
     """
-    Convierte un PDF a texto Markdown.
+    Receive the path of a PDF file and translates it to markdown, optionally saving it to another file if an output path is specified.
 
-    :param input_path: Ruta al archivo PDF.
-    :param output_path: Ruta opcional para guardar el archivo Markdown.
-    :return: Cadena con contenido en Markdown.
+    :param input_path: Path to the PDF file.
+    :param output_path: Optional path to save the Markdown file.
+    :return: String with Markdown content.
     """
     if not os.path.exists(input_path):
-        return f"Error: El archivo {input_path} no existe."
+        return f"Error: The file {input_path} does not exist."
     
     try:
         md_blocks = []
@@ -27,7 +27,7 @@ def pdf_to_markdown(input_path: str, output_path: str = None) -> str:
                     continue
                 # Convertir el texto extraído a formato Markdown
                 converted_text = md_convert(text, heading_style="ATX")
-                md_blocks.append(f"## Página {page_num}\n\n{converted_text}")
+                md_blocks.append(f"## Page {page_num}\n\n{converted_text}")
         
         markdown_content = "\n\n".join(md_blocks)
         
@@ -35,12 +35,12 @@ def pdf_to_markdown(input_path: str, output_path: str = None) -> str:
         if output_path:
             with open(output_path, 'w', encoding='utf-8') as file:
                 file.write(markdown_content)
-            return f"Archivo Markdown guardado en: {output_path}"
+            return f"Markdown file saved in: {output_path}"
         
         return markdown_content
     
     except Exception as e:
-        return f"Error al procesar el PDF: {str(e)}"
+        return f"Error processing the PDF: {str(e)}"
 
 if __name__ == "__main__":
     app.run(transport="stdio")
