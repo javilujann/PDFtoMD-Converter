@@ -1,5 +1,6 @@
 # PDFtoMD-Converter
 [![smithery badge](https://smithery.ai/badge/@javilujann/pdftomd-converter)](https://smithery.ai/server/@javilujann/pdftomd-converter)
+
 Servidor MCP que convierte archivos PDF a formato Markdown (MD).
 
 ## Requisitos
