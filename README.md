@@ -5,24 +5,48 @@ Servidor MCP que convierte archivos PDF a formato Markdown (MD).
 
 ## Requisitos
 
-Para usar este servidor MCP necesitas tener instalado:
+Para usar este servidor MCP necesitas instalar las depedencias necesarias. Puedes hacerlo ejecutando el siguiente comando:
 
 ```bash
-pip install pdfplumber markdownify mcp-server
+pip install -r requirements.txt
 ```
 
 ## Uso
 
 ### Ejecutar el servidor
 
-Para iniciar el servidor MCP, ejecuta:
+El servidor se necesita ejecutar en local para acceder a los archivos, por lo que esta pensado para usarse mediante el comando *uv* o ejecutarlo directamente con *python*.
 
-```bash
-python main.py
+Su uso mas sencillo es mediante un cliente MCP compatible, como puede ser Visual Studio Code o Cherry Studio.
+
+
+
+La configuración que se necesita para usarlo en VSCode es la siguiente: 
+
+```json
+{
+    "servers": {
+        "PDF-Md-Converter-server": {
+            "type": "stdio",
+            "command": "python",
+            "args": ["${workspaceFolder}/main.py"],
+            "env": {}
+        },
+    }
+}
 ```
 
-Esto lanzará el servidor usando transporte stdio, que es compatible con múltiples clientes MCP.
+Mientras que para usarlo con Cherry Studio, la configuración es la siguiente:
 
+```txt
+Type: Standard Input/Output(stdio)
+Command: uv
+Args: 
+    --directory
+    {path_to_your_workspace}
+    run
+    main.py
+```
 
 ### Funcionalidad
 
@@ -43,6 +67,5 @@ def pdf_to_markdown(input_path: str, output_path: str = None) -> str:
 
 Este servidor es compatible con cualquier cliente que implemente el protocolo MCP (Model Context Protocol), incluyendo:
 
-- GitHub Copilot
-- Azure OpenAI Service
 - Visual Studio Code con extensiones compatibles con MCP
+- Cherry Studio

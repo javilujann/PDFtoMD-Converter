@@ -1,0 +1,3 @@
+pdfplumber 
+markdownify 
+mcp-server
