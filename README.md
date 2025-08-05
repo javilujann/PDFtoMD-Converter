@@ -38,7 +38,7 @@ La configuración que se necesita para usarlo en VSCode es la siguiente:
 
 Mientras que para usarlo con Cherry Studio, la configuración es la siguiente:
 
-```txt
+```yaml
 Type: Standard Input/Output(stdio)
 Command: uv
 Args: 
@@ -69,3 +69,4 @@ Este servidor es compatible con cualquier cliente que implemente el protocolo MC
 
 - Visual Studio Code con extensiones compatibles con MCP
 - Cherry Studio
+- Community Node for MCP in n8n
